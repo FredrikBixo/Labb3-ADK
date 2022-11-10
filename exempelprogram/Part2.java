@@ -10,6 +10,7 @@ public class Part2 {
     int t = io.getInt();
     int e = io.getInt();
 
+    // READS THE EDGES AND ADDS IT TO THE ADJENCY LIST "edges".
     ArrayList<LinkedList<Edge>> edges = new ArrayList<LinkedList<Edge>>(v);
     for (int i = 0; i < v; i++)
     edges.add(new LinkedList<Edge>());
@@ -38,6 +39,7 @@ public class Part2 {
     System.out.println(count);
     */
 
+    // RUN FOR FULGERSON
     fordFulgerson(edges,s-1,t-1,v);
 
   }
@@ -54,6 +56,7 @@ public class Part2 {
     while (q.size() != 0) {
       Edge u = (Edge) q.poll();
       for (Edge n : g.get(u.to)) {
+        // residual capacity = capacity - flow
         if (visited[n.to] == false
         && (n.cap - n.flow) > 0) {
           if (n.to == t) {
@@ -72,20 +75,20 @@ public class Part2 {
 
   void fordFulgerson(ArrayList<LinkedList<Edge>> g,int s,int t, int N) {
 
-    Edge x;
+    Edge x; // THE SINK NODE T
     int maxflow = 0;
     while ((x = BFS(g,s,t,N)) != null) {
       int r = Integer.MAX_VALUE;
       LinkedList<Edge> p = new LinkedList<Edge>();
 
-      // Find min residual path
+      // Find minimum residual capaciy in the residual path returned from BFS.
       while (x.parent != null) {
         p.add(x);
         r = Math.min(r, x.cap - x.flow);
         x = x.parent;
       }
 
-      // Update edges in path.
+      // Add to the edge flow in path with the min residual capacity.
       for (Edge e : p) {
         e.flow += r;
         e.invers.flow = -e.flow;
@@ -107,8 +110,11 @@ public class Part2 {
         }
       }
     }
+
+    // PRINT NUMBER OF EDGES WITH POSITVE FLOW.
     io.println(edges.size());
 
+    // PRINT ALL EDGES IN THE GRAPH WITH POSITIVE FLOW
     for (Edge e: edges) {
       io.println((e.from+1) + " " + (e.to+1) + " " +  e.flow);
     }

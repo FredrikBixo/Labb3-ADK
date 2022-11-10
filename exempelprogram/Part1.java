@@ -59,7 +59,7 @@ public class Part1 {
       addEdge(am,i,t,1);
     }
 
-    printGraph(am, v, e);
+  //  printGraph(am, v, e);
 
     int f_v = io.getInt();
     int f_s = io.getInt();
